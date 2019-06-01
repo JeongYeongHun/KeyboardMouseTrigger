@@ -14,9 +14,9 @@ def load(num):
     cur = conn.cursor()
     sql = "select * from key where id=?"
     cur.execute(sql, (num,))
-    rows = cur.fetchall()
+    row = cur.fetchone()
     conn.close()
-    return rows
+    return row
 
 def list():
     conn = sqlite3.connect("key.db")
