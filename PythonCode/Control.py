@@ -1,4 +1,5 @@
 import pygame
+import GPIO.RPi as GPIO
 
 def control(keylist, stack):
     windowwidth = 100
@@ -11,6 +12,9 @@ def control(keylist, stack):
     clock = pygame.time.Clock()
 
     done = True
+
+    screen_info = pygame.display.Info()
+    pygame.mouse.set_pos(screen_info.current_w/2, screen_info.current_h/2)
 
     while done:
         for event in pygame.event.get():
@@ -36,7 +40,14 @@ def control(keylist, stack):
                     stack[13] = 0
                 if rclick == 0:
                     stack[14] = 0
-            
-                        
+            if event.type == pygame.MOUSEMOTION:
+                x,y = pygame.mouse.get_pos()
+                stack[18] = x-(screen_info.current_w/2)
+                stack[19] = y-(screen_info.current_h/2)
+                pygame.mouse.set_pos(screen_info.current_w/2, screen_info.current_h/2)
+                
         print(stack)
+
+
+        
     pygame.quit()

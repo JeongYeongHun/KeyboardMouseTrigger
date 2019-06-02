@@ -1,4 +1,3 @@
-import pygame
 import sqlite3
 
 def insert(name, w, a, s, d, shift, c, alt, tab, space, one, two, three, esc, mousemove, e, q):
