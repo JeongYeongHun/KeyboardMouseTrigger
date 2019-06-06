@@ -1,4 +1,6 @@
 import pygame
+import Conduct
+#import testSerial
 
 def control(keylist, stack):
     windowwidth = 100
@@ -13,6 +15,7 @@ def control(keylist, stack):
     done = True
     screen_info = pygame.display.Info()
     pygame.mouse.set_pos(screen_info.current_w/2, screen_info.current_h/2) 
+    Conduct.setStack(stack)
 
     while done:
         for event in pygame.event.get():
@@ -21,6 +24,7 @@ def control(keylist, stack):
                     if pygame.key.name(event.key) == i:
                         stack[index] = 1
                 if event.key == 279:    #end
+                    Conduct.endConduct()
                     done = False
             if event.type == pygame.KEYUP:
                 for index, i in enumerate(keylist):
@@ -43,9 +47,10 @@ def control(keylist, stack):
                 stack[18] = x-(screen_info.current_w/2)
                 stack[19] = y-(screen_info.current_h/2)
                 pygame.mouse.set_pos(screen_info.current_w/2, screen_info.current_h/2)
-                
-        print(stack)
 
+            Conduct.conduct(stack)
+            print(stack)
+        #testSerial.sendserial(stack)   #아두이노와 시리얼통신
         
 
         
