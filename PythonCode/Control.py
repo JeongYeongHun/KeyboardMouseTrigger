@@ -1,10 +1,10 @@
 import pygame
 import Conduct
-#import testSerial
+#import SerialToArduino
 
 def control(keylist, stack):
-    windowwidth = 100
-    windowheight = 100
+    windowwidth = 300
+    windowheight = 300
     pygame.init()
     pygame.display.init()
     #screen = pygame.display.set_mode((windowwidth, windowheight), pygame.FULLSCREEN)
@@ -14,7 +14,11 @@ def control(keylist, stack):
 
     done = True
     screen_info = pygame.display.Info()
-    pygame.mouse.set_pos(screen_info.current_w/2, screen_info.current_h/2) 
+    dx = screen_info.current_w/2
+    dy = screen_info.current_h/2
+    #pygame.mouse.set_pos(dx, dy)
+    #pygame.mouse.set_visible(False)
+    #pygame.event.set_grab(True)
     Conduct.setStack(stack)
 
     while done:
@@ -43,14 +47,25 @@ def control(keylist, stack):
                 if rclick == 0:
                     stack[14] = 0
             if event.type == pygame.MOUSEMOTION:
-                x,y = pygame.mouse.get_pos()
-                stack[18] = x-(screen_info.current_w/2)
-                stack[19] = y-(screen_info.current_h/2)
-                pygame.mouse.set_pos(screen_info.current_w/2, screen_info.current_h/2)
+                x,y = pygame.mouse.get_rel()
+                stack[18] = x
+                stack[19] = y
 
+                '''
+                x,y = pygame.mouse.get_pos()
+                if x < (dx/5) or y < (dy/5) or x > (dx + (dx/5)*4) or y > (dy + (dy/5)*4):
+                    pygame.mouse.set_pos(dx, dy)
+                    stack[18] = x-dx
+                    stack[19] = y-dy
+                    Conduct.setStack(stack)
+                else:
+                    stack[18] = x-dx
+                    stack[19] = y-dy
+                '''
+                
             Conduct.conduct(stack)
             print(stack)
-        #testSerial.sendserial(stack)   #아두이노와 시리얼통신
+        #SerialToArduino.sendserial(stack)   #아두이노와 시리얼통신
         
 
         

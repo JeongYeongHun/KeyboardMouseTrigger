@@ -1,5 +1,7 @@
 import RPi.GPIO as gpio
+#from RPIO import PWM
 import copy
+import time
 
 dic = {0:26, 1:24, 2:26, 3:24, 4:26, 5:22, 6:21, 7:20, 8:16, 9:23, 10:6, 11:5, 12:11, 13:9, 14:10, 16:7, 17:8, 18:18, 19:19}
 
@@ -15,8 +17,9 @@ wsservo = gpio.PWM(dic[0], 50)
 wsservo.start(6.5)
 
 gpio.setup(dic[18], gpio.OUT)
+x = 7
 xservo = gpio.PWM(dic[18], 50)
-xservo.start(6.5)
+xservo.start(x)
 
 gpio.setup(dic[19], gpio.OUT)
 yservo = gpio.PWM(dic[19], 50)
@@ -35,13 +38,101 @@ gpio.setup(dic[14], gpio.OUT)
 gpio.setup(dic[16], gpio.OUT)
 gpio.setup(dic[17], gpio.OUT)
 
+gpio.setup(17, gpio.OUT) #touchBar
+
 pre_stack = []
+tBar = True
+gpio.output(17, tBar)
 
 def setStack(stack):
     global pre_stack
     pre_stack = copy.deepcopy(stack)    #깊은 복사
 
 def conduct(stack):
+    global x
+    global tBar
+    mx = x + (stack[18] / 10)
+    if mx > 9 or mx < 5:
+        if mx > 9 and tBar:
+            xservo.ChangeDutyCycle(9.0)
+            time.sleep(0.3)
+            mx = mx - 9
+            mcycle = mx // 4
+            for i in range(int(mcycle), 0, -1):
+                tBar = not tBar
+                gpio.output(17, tBar)
+                if not tBar:
+                    xservo.ChangeDutyCycle(5.0)
+                if tBar:
+                    xservo.ChangeDutyCycle(9.0)
+                time.sleep(0.3)
+            if not tBar:
+                x = mx - (mcycle*4) + 5
+            if tBar:
+                x = 9 - (mx - (mcycle*4))
+            xservo.ChangeDutyCycle(x)
+            time.sleep(0.3)
+        elif mx > 9 and not tBar:
+            xservo.ChangeDutyCycle(5.0)
+            time.sleep(0.3)
+            mx = mx - (x-5) -x
+            mcycle = mx // 4
+            for i in range(int(mcycle), 0, -1):
+                tBar = not tBar
+                gpio.output(17, tBar)
+                if not tBar:
+                    xservo.ChangeDutyCycle(5.0)
+                if tBar:
+                    xservo.ChangeDutyCycle(9.0)
+                time.sleep(0.3)
+            if not tBar:
+                x = mx - (mcycle*4) + 5
+            if tBar:
+                x = 9 - (mx - (mcycle*4))
+            xservo.ChangeDutyCycle(x)
+            time.sleep(0.3)
+        elif mx < 5 and tBar:
+            xservo.ChangeDutyCycle(5.0)
+            time.sleep(0.3)
+            mx = x - mx - (x-5)
+            mcycle = mx // 4
+            for i in range(int(mcycle), 0, -1):
+                tBar = not tBar
+                gpio.output(17, tBar)
+                if not tBar:
+                    xservo.ChangeDutyCycle(9.0)
+                if tBar:
+                    xservo.ChangeDutyCycle(5.0)
+                time.sleep(0.3)
+            if tBar:
+                x = mx - (mcycle*4) + 5
+            if not tBar:
+                x = 9 - (mx - (mcycle*4))
+            xservo.ChangeDutyCycle(x)
+            time.sleep(0.3)
+        elif mx < 5 and not tBar:
+            xservo.ChangeDutyCycle(9.0)
+            time.sleep(0.3)
+            mx = x - mx - (9-x)
+            mcycle = mx // 4
+            for i in range(int(mcycle), 0, -1):
+                tBar = not tBar
+                gpio.output(17, tBar)
+                if not tBar:
+                    xservo.ChangeDutyCycle(9.0)
+                if tBar:
+                    xservo.ChangeDutyCycle(5.0)
+                time.sleep(0.3)
+            if tBar:
+                x = mx - (mcycle*4) + 5
+            if not tBar:
+                x = 9 - (mx - (mcycle*4))
+            xservo.ChangeDutyCycle(x)
+            time.sleep(0.3)
+        else:
+            xservo.ChangeDutyCycle(mx)
+            x = mx
+    
     for index, i in enumerate(stack):   #compare
         if pre_stack[index] != i:
             if i == 0:  #key up
