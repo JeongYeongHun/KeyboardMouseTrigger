@@ -105,7 +105,7 @@ def processExit():        #종료버튼 클릭 이벤트처리
 window = Tk()
 window.geometry("300x250+0+0")
 
-btn1 = Button(window, width=13, text='게임시작')
+btn1 = Button(window, width=13, text='게임시작' command=processStart)
 btn2 = Button(window, width=13, text='설정', command=processOption)
 btn3 = Button(window, width=13, text='종료', command=processExit)
 
