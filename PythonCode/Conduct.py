@@ -22,8 +22,9 @@ xservo = gpio.PWM(dic[18], 50)
 xservo.start(x)
 
 gpio.setup(dic[19], gpio.OUT)
+y = 7
 yservo = gpio.PWM(dic[19], 50)
-yservo.start(6.5)
+yservo.start(y)
 
 gpio.setup(dic[5], gpio.OUT)
 gpio.setup(dic[6], gpio.OUT)
@@ -157,7 +158,17 @@ def conduct(stack):
             x = mx+5
             time.sleep(0.2)
             print ("  x : ", x)
-                
+
+    if stack[19] != 0:
+        global y
+        move = (stack[19]/10) * (-1)
+        y = y + move
+        if y > 9:
+            y = 9
+        if y < 5.5:
+            y = 5.5
+        yservo.ChangeDutyCycle(y)
+        print("yyyyyyyyyyyyy" , y)
 
     for index, i in enumerate(stack):   #compare
         if pre_stack[index] != i:
