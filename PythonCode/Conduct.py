@@ -65,7 +65,6 @@ def conduct(stack):
         
         if mx > 4:
             if tBar:    #move right
-                print ("  case 1. ")
                 xservo.ChangeDutyCycle(9.0)
                 time.sleep(0.3)
                 move = round(move - (4 - omx),2)
@@ -87,7 +86,6 @@ def conduct(stack):
                 xservo.ChangeDutyCycle(x)
                 time.sleep(0.2)
             elif not tBar:  #move left
-                print ("  case 2. ")
                 xservo.ChangeDutyCycle(9.0)
                 time.sleep(0.3)
                 move = round(move - (4 - omx),2)
@@ -110,7 +108,6 @@ def conduct(stack):
                 time.sleep(0.2)
         elif mx < 0:
             if tBar:    #move left
-                print ("  case 3. ")
                 xservo.ChangeDutyCycle(5.0)
                 time.sleep(0.3)
                 move = round(move - omx,2)
@@ -132,7 +129,6 @@ def conduct(stack):
                 xservo.ChangeDutyCycle(x)
                 time.sleep(0.2)
             elif not tBar:  #move right
-                print ("  case 4. ")
                 xservo.ChangeDutyCycle(5.0)
                 time.sleep(0.3)
                 move = round(move - omx,2)
@@ -157,18 +153,16 @@ def conduct(stack):
             xservo.ChangeDutyCycle(mx+5)
             x = mx+5
             time.sleep(0.2)
-            print ("  x : ", x)
 
     if stack[19] != 0:
         global y
-        move = (stack[19]/10) * (-1)
+        move = (stack[19]/20) * (-1)
         y = y + move
         if y > 9:
             y = 9
         if y < 5.5:
             y = 5.5
         yservo.ChangeDutyCycle(y)
-        print("yyyyyyyyyyyyy" , y)
 
     for index, i in enumerate(stack):   #compare
         if pre_stack[index] != i:
