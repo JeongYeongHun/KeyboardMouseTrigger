@@ -57,11 +57,11 @@ def conduct(stack):
         omx = x - 5
         
         if tBar:
-            mx = omx + (stack[18]/10)
+            mx = omx + ((stack[18]/10) * stack[15])
         elif not tBar:
-            mx = omx - (stack[18]/10)
+            mx = omx - ((stack[18]/10) * stack[15])
 
-        move = abs(stack[18]/10)
+        move = abs((stack[18]/10) * stack[15])
         
         if mx > 4:
             if tBar:    #move right
@@ -153,16 +153,18 @@ def conduct(stack):
             xservo.ChangeDutyCycle(mx+5)
             x = mx+5
             time.sleep(0.2)
+        print (" x : ", x)
 
     if stack[19] != 0:
         global y
-        move = (stack[19]/20) * (-1)
-        y = y + move
+        move = (stack[19]/30) * (-1) * stack[15]
+        y = round(y + move,4)
         if y > 9:
             y = 9
         if y < 5.5:
             y = 5.5
         yservo.ChangeDutyCycle(y)
+        print (" y : ", y)
 
     for index, i in enumerate(stack):   #compare
         if pre_stack[index] != i:
