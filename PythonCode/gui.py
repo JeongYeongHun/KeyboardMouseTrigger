@@ -1,6 +1,16 @@
 from tkinter import *
 
-#def processStart():        #게임시작버튼 클릭 이벤트처리
+def processStart():        #게임시작버튼 클릭 이벤트처리
+    window = Tk()
+    window.geometry("520x480+0+0")
+
+    Lbox1 = Listbox(window, height=24, width=70)
+    btn6 = Button(window, width=13, text='선택')
+    btn7 = Button(window, width=13, text='취소')
+
+    Lbox1.place(x=10,y=10)
+    btn6.place(x=110,y=420)
+    btn7.place(x=310,y=420)
 
 def processOption():        #설정버튼 클릭 이벤트처리
     window = Tk()
