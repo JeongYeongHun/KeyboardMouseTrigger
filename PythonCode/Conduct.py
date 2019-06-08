@@ -165,7 +165,7 @@ def conduct(stack):
                         adservo.ChangeDutyCycle(8.0)
                     elif index == 3 and pre_stack[1] == 0:  #d
                         adservo.ChangeDutyCycle(5.0)
-                else:
+                else: 
                     gpio.output(dic[index], 1)
     setStack(stack)
 
