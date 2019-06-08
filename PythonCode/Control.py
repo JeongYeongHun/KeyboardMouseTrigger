@@ -64,7 +64,7 @@ def control(keylist, stack):
                 '''
                 
             Conduct.conduct(stack)
-            print(stack)
+            #print(stack)
         #SerialToArduino.sendserial(stack)   #아두이노와 시리얼통신
         
 

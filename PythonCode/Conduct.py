@@ -49,90 +49,116 @@ def setStack(stack):
     pre_stack = copy.deepcopy(stack)    #깊은 복사
 
 def conduct(stack):
-    global x
-    global tBar
-    mx = x + (stack[18] / 10)
-    if mx > 9 or mx < 5:
-        if mx > 9 and tBar:
-            xservo.ChangeDutyCycle(9.0)
-            time.sleep(0.3)
-            mx = mx - 9
-            mcycle = mx // 4
-            for i in range(int(mcycle), 0, -1):
+    if stack[18] != 0:
+        global x
+        global tBar
+        x = round(x,2)
+        omx = x - 5
+        
+        if tBar:
+            mx = omx + (stack[18]/10)
+        elif not tBar:
+            mx = omx - (stack[18]/10)
+
+        move = abs(stack[18]/10)
+        
+        if mx > 4:
+            if tBar:    #move right
+                print ("  case 1. ")
+                xservo.ChangeDutyCycle(9.0)
+                time.sleep(0.3)
+                move = round(move - (4 - omx),2)
                 tBar = not tBar
                 gpio.output(17, tBar)
-                if not tBar:
-                    xservo.ChangeDutyCycle(5.0)
+                while move > 4:
+                    if tBar:
+                        xservo.ChangeDutyCycle(9.0)
+                    else:
+                        xservo.ChangeDutyCycle(5.0)
+                    time.sleep(0.3)
+                    move = move - 4
+                    tBar = not tBar
+                    gpio.output(17, tBar)
                 if tBar:
-                    xservo.ChangeDutyCycle(9.0)
+                    x = 5.0+move
+                elif not tBar:
+                    x = 9.0-move
+                xservo.ChangeDutyCycle(x)
+                time.sleep(0.2)
+            elif not tBar:  #move left
+                print ("  case 2. ")
+                xservo.ChangeDutyCycle(9.0)
                 time.sleep(0.3)
-            if not tBar:
-                x = mx - (mcycle*4) + 5
-            if tBar:
-                x = 9 - (mx - (mcycle*4))
-            xservo.ChangeDutyCycle(x)
-            time.sleep(0.3)
-        elif mx > 9 and not tBar:
-            xservo.ChangeDutyCycle(5.0)
-            time.sleep(0.3)
-            mx = mx - (x-5) -x
-            mcycle = mx // 4
-            for i in range(int(mcycle), 0, -1):
+                move = round(move - (4 - omx),2)
                 tBar = not tBar
                 gpio.output(17, tBar)
-                if not tBar:
-                    xservo.ChangeDutyCycle(5.0)
+                while move > 4:
+                    if tBar:
+                        xservo.ChangeDutyCycle(5.0)
+                    else:
+                        xservo.ChangeDutyCycle(9.0)
+                    time.sleep(0.3)
+                    move = move - 4
+                    tBar = not tBar
+                    gpio.output(17, tBar)
                 if tBar:
-                    xservo.ChangeDutyCycle(9.0)
+                    x = 9.0-move
+                elif not tBar:
+                    x = 5.0+move
+                xservo.ChangeDutyCycle(x)
+                time.sleep(0.2)
+        elif mx < 0:
+            if tBar:    #move left
+                print ("  case 3. ")
+                xservo.ChangeDutyCycle(5.0)
                 time.sleep(0.3)
-            if not tBar:
-                x = mx - (mcycle*4) + 5
-            if tBar:
-                x = 9 - (mx - (mcycle*4))
-            xservo.ChangeDutyCycle(x)
-            time.sleep(0.3)
-        elif mx < 5 and tBar:
-            xservo.ChangeDutyCycle(5.0)
-            time.sleep(0.3)
-            mx = x - mx - (x-5)
-            mcycle = mx // 4
-            for i in range(int(mcycle), 0, -1):
+                move = round(move - omx,2)
                 tBar = not tBar
                 gpio.output(17, tBar)
-                if not tBar:
-                    xservo.ChangeDutyCycle(9.0)
+                while move > 4:
+                    if tBar:
+                        xservo.ChangeDutyCycle(5.0)
+                    else:
+                        xservo.ChangeDutyCycle(9.0)
+                    time.sleep(0.3)
+                    move = move - 4
+                    tBar = not tBar
+                    gpio.output(17, tBar)
                 if tBar:
-                    xservo.ChangeDutyCycle(5.0)
+                    x = 9.0-move
+                elif not tBar:
+                    x = 5.0+move
+                xservo.ChangeDutyCycle(x)
+                time.sleep(0.2)
+            elif not tBar:  #move right
+                print ("  case 4. ")
+                xservo.ChangeDutyCycle(5.0)
                 time.sleep(0.3)
-            if tBar:
-                x = mx - (mcycle*4) + 5
-            if not tBar:
-                x = 9 - (mx - (mcycle*4))
-            xservo.ChangeDutyCycle(x)
-            time.sleep(0.3)
-        elif mx < 5 and not tBar:
-            xservo.ChangeDutyCycle(9.0)
-            time.sleep(0.3)
-            mx = x - mx - (9-x)
-            mcycle = mx // 4
-            for i in range(int(mcycle), 0, -1):
+                move = round(move - omx,2)
                 tBar = not tBar
                 gpio.output(17, tBar)
-                if not tBar:
-                    xservo.ChangeDutyCycle(9.0)
+                while move > 4:
+                    if tBar:
+                        xservo.ChangeDutyCycle(9.0)
+                    else:
+                        xservo.ChangeDutyCycle(5.0)
+                    time.sleep(0.3)
+                    move = move - 4
+                    tBar = not tBar
+                    gpio.output(17, tBar)
                 if tBar:
-                    xservo.ChangeDutyCycle(5.0)
-                time.sleep(0.3)
-            if tBar:
-                x = mx - (mcycle*4) + 5
-            if not tBar:
-                x = 9 - (mx - (mcycle*4))
-            xservo.ChangeDutyCycle(x)
-            time.sleep(0.3)
+                    x = 5.0+move
+                elif not tBar:
+                    x = 9.0-move
+                xservo.ChangeDutyCycle(x)
+                time.sleep(0.2)
         else:
-            xservo.ChangeDutyCycle(mx)
-            x = mx
-    
+            xservo.ChangeDutyCycle(mx+5)
+            x = mx+5
+            time.sleep(0.2)
+            print ("  x : ", x)
+                
+
     for index, i in enumerate(stack):   #compare
         if pre_stack[index] != i:
             if i == 0:  #key up
@@ -171,9 +197,113 @@ def conduct(stack):
 
 def endConduct():
     adservo.stop()
+    wsservo.stop()
+    xservo.stop()
     gpio.cleanup()
             
 if __name__ == "__main__":
     print("test code")
     setStack([1,1,2,2,3,3,4])
     print ("pre : ", pre_stack)
+
+''' #Before Mouse Moving Code
+        if tBar:
+            mx = x + (stack[18] / 10)
+        if not tBar:
+            mx = x + ((stack[18] / 10) *(-1))
+        
+        if mx > 9 or mx < 5:
+            if mx > 9 and tBar:
+                print ("case 1.")
+                xservo.ChangeDutyCycle(9.0)
+                time.sleep(0.3)
+                mx = mx - 9
+                mcycle = mx // 4
+                for i in range(int(mcycle), 0, -1):
+                    tBar = not tBar
+                    gpio.output(17, tBar)
+                    if not tBar:
+                        xservo.ChangeDutyCycle(5.0)
+                    if tBar:
+                        xservo.ChangeDutyCycle(9.0)
+                    time.sleep(0.3)
+                tBar = not tBar
+                gpio.output(17, tBar)
+                if tBar:
+                    x = mx - (mcycle*4) + 5
+                if not tBar:
+                    x = 9 - (mx - (mcycle*4))
+                xservo.ChangeDutyCycle(round(x,2))
+                time.sleep(0.3)
+            elif mx > 9 and not tBar:
+                print ("case 2.")
+                xservo.ChangeDutyCycle(5.0)
+                time.sleep(0.3)
+                mx = mx - (x-5) -x
+                mcycle = mx // 4
+                for i in range(int(mcycle), 0, -1):
+                    tBar = not tBar
+                    gpio.output(17, tBar)
+                    if not tBar:
+                        xservo.ChangeDutyCycle(5.0)
+                    if tBar:
+                        xservo.ChangeDutyCycle(9.0)
+                    time.sleep(0.3)
+                tBar = not tBar
+                gpio.output(17, tBar)
+                if tBar:
+                    x = mx - (mcycle*4) + 5
+                if not tBar:
+                    x = 9 - (mx - (mcycle*4))
+                xservo.ChangeDutyCycle(round(x,2))
+                time.sleep(0.3)
+            elif mx < 5 and tBar:
+                print ("case 3.")
+                xservo.ChangeDutyCycle(5.0)
+                time.sleep(0.3)
+                mx = x - mx - (x-5)
+                mcycle = mx // 4
+                for i in range(int(mcycle), 0, -1):
+                    tBar = not tBar
+                    gpio.output(17, tBar)
+                    if not tBar:
+                        xservo.ChangeDutyCycle(9.0)
+                    if tBar:
+                        xservo.ChangeDutyCycle(5.0)
+                    time.sleep(0.3)
+                tBar = not tBar
+                gpio.output(17, tBar)
+                if not tBar:
+                    x = mx - (mcycle*4) + 5
+                if tBar:
+                    x = 9 - (mx - (mcycle*4))
+                xservo.ChangeDutyCycle(round(x,2))
+                time.sleep(0.3)
+            elif mx < 5 and not tBar:
+                print ("case 4.")
+                xservo.ChangeDutyCycle(9.0)
+                time.sleep(0.3)
+                mx = x - mx - (9-x)
+                mcycle = mx // 4
+                for i in range(int(mcycle), 0, -1):
+                    tBar = not tBar
+                    gpio.output(17, tBar)
+                    if not tBar:
+                        xservo.ChangeDutyCycle(9.0)
+                    if tBar:
+                        xservo.ChangeDutyCycle(5.0)
+                    time.sleep(0.3)
+                tBar = not tBar
+                gpio.output(17, tBar)
+                if not tBar:
+                    x = mx - (mcycle*4) + 5
+                if tBar:
+                    x = 9 - (mx - (mcycle*4))
+                xservo.ChangeDutyCycle(round(x,2))
+                time.sleep(0.3)
+        else:
+            xservo.ChangeDutyCycle(round(mx,2))
+            x = round(mx,2)
+
+        print("x : ", x)
+'''    
