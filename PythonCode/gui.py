@@ -1,62 +1,143 @@
 from tkinter import *
+import Control
+import DBHelper
+
 
 def processStart():        #게임시작버튼 클릭 이벤트처리
-    window = Tk()
-    window.geometry("520x480+0+0")
+    global windows
+    windows = Tk()
+    windows.title("Select Setting")
+    windows.geometry("200x300+0+0")
 
-    Lbox1 = Listbox(window, height=24, width=70)
-    btn6 = Button(window, width=13, text='선택')
-    btn7 = Button(window, width=13, text='취소')
+    setlist = DBHelper.list()
 
+    Lbox1 = Listbox(windows, height=12, width=25)
+    for item in setlist:
+        Lbox1.insert(END,item)
+    btn6 = Button(windows, width=13, text='선택', command=lambda: start(Lbox1.curselection()))
+    btn7 = Button(windows, width=13, text='취소', command=processsExit)
+
+    Lbox1.activate(0)
     Lbox1.place(x=10,y=10)
-    btn6.place(x=110,y=420)
-    btn7.place(x=310,y=420)
+    btn6.place(x=40,y=215)
+    btn7.place(x=40,y=255)
+
+def start(select):
+    if select != ():
+        keylist = []
+        stack = []
+        row = DBHelper.load(select[0] + 1)
+        
+        for k in range(18):
+            keylist.append(row[k+2])
+            stack.append(0)
+            
+        stack.append(0.0)     #keylist에는 없고 stack에만 존재. 마우스의 x와y값.
+        stack.append(0.0)
+        stack[15] = keylist[15] #mouse sensitivy
+
+        Control.control(keylist, stack)
+    
+
+def keyInput(event):
+    print("s")
+
 
 def processOption():        #설정버튼 클릭 이벤트처리
-    window = Tk()
-    window.geometry("520x480+0+0")
+    global windowo
+    windowo = Tk()
+    windowo.title("Setting")
+    windowo.geometry("520x480+0+0")
 
-    lbl0 = Label(window, width=7, text='키설정')
+    lbl0 = Label(windowo, width=7, text='키설정')
 
-    lbl1 = Label(window, width=12, text='사용자이름')
-    lbl2 = Label(window, width=12, text='앞으로가기')
-    lbl3 = Label(window, width=12, text='왼쪽으로가기')
-    lbl4 = Label(window, width=12, text='뒤로가기')
-    lbl5 = Label(window, width=12, text='오른쪽으로가기')
-    lbl6 = Label(window, width=12, text='달리기')
-    lbl7 = Label(window, width=12, text='앉기')
-    lbl8 = Label(window, width=12, text='자유시점')
-    lbl9 = Label(window, width=12, text='인벤토리')
-    lbl10 = Label(window, width=12, text='점프')
-    lbl11 = Label(window, width=12, text='1번무기로교체')
-    lbl12 = Label(window, width=12, text='2번무기로교체')
-    lbl13 = Label(window, width=12, text='3번무기로교체')
-    lbl14 = Label(window, width=12, text='감도')
-    lbl15 = Label(window, width=12, text='오른쪽기울이기')
-    lbl16 = Label(window, width=12, text='왼쪽기울이기')
+    lbl1 = Label(windowo, width=12, text='사용자이름')
+    lbl2 = Label(windowo, width=12, text='앞으로가기')
+    lbl3 = Label(windowo, width=12, text='왼쪽으로가기')
+    lbl4 = Label(windowo, width=12, text='뒤로가기')
+    lbl5 = Label(windowo, width=12, text='오른쪽으로가기')
+    lbl6 = Label(windowo, width=12, text='달리기')
+    lbl7 = Label(windowo, width=12, text='앉기')
+    lbl8 = Label(windowo, width=12, text='자유시점')
+    lbl9 = Label(windowo, width=12, text='인벤토리')
+    lbl10 = Label(windowo, width=12, text='점프')
+    lbl11 = Label(windowo, width=12, text='1번무기로교체')
+    lbl12 = Label(windowo, width=12, text='2번무기로교체')
+    lbl13 = Label(windowo, width=12, text='3번무기로교체')
+    lbl14 = Label(windowo, width=12, text='감도')
+    lbl15 = Label(windowo, width=12, text='오른쪽기울이기')
+    lbl16 = Label(windowo, width=12, text='왼쪽기울이기')
 
-    txt1 = Text(window, height=1, width=7)
-    txt2 = Text(window, height=1, width=7)
-    txt3 = Text(window, height=1, width=7)
-    txt4 = Text(window, height=1, width=7)
-    txt5 = Text(window, height=1, width=7)
-    txt6 = Text(window, height=1, width=7)
-    txt7 = Text(window, height=1, width=7)
-    txt8 = Text(window, height=1, width=7)
-    txt9 = Text(window, height=1, width=7)
-    txt10 = Text(window, height=1, width=7)
-    txt11 = Text(window, height=1, width=7)
-    txt12 = Text(window, height=1, width=7)
-    txt13 = Text(window, height=1, width=7)
-    txt14 = Text(window, height=1, width=7)
-    txt15 = Text(window, height=1, width=7)
-    txt16 = Text(window, height=1, width=7)
+    rows = DBHelper.load(1) #normal
+
+    txt1 = Entry(windowo, width=7)
+    txt2 = Entry(windowo, width=7)
+    txt3 = Entry(windowo, width=7)
+    txt4 = Entry(windowo,  width=7)
+    txt5 = Entry(windowo,  width=7)
+    txt6 = Entry(windowo, width=7)
+    txt7 = Entry(windowo,  width=7)
+    txt8 = Entry(windowo, width=7)
+    txt9 = Entry(windowo, width=7)
+    txt10 = Entry(windowo, width=7)
+    txt11 = Entry(windowo,  width=7)
+    txt12 = Entry(windowo, width=7)
+    txt13 = Entry(windowo, width=7)
+    txt14 = Entry(windowo, width=7)
+    txt15 = Entry(windowo,  width=7)
+    txt16 = Entry(windowo,  width=7)
+    txt2.insert(0,rows[2])
+    txt3.insert(0,rows[3])
+    txt4.insert(0,rows[4])
+    txt5.insert(0,rows[5])
+    txt6.insert(0,rows[6])
+    txt7.insert(0,rows[7])
+    txt8.insert(0,rows[8])
+    txt9.insert(0,rows[9])
+    txt10.insert(0,rows[10])
+    txt11.insert(0,rows[11])
+    txt12.insert(0,rows[12])
+    txt13.insert(0,rows[13])
+    txt14.insert(0,rows[14])
+    txt15.insert(0,rows[18])
+    txt16.insert(0,rows[19])
+    txt2.configure(state='readonly')
+    txt3.configure(state='readonly')
+    txt4.configure(state='readonly')
+    txt5.configure(state='readonly')
+    txt6.configure(state='readonly')
+    txt7.configure(state='readonly')
+    txt8.configure(state='readonly')
+    txt9.configure(state='readonly')
+    txt10.configure(state='readonly')
+    txt11.configure(state='readonly')
+    txt12.configure(state='readonly')
+    txt13.configure(state='readonly')
+    txt14.configure(state='readonly')
+    txt15.configure(state='readonly')
+    txt16.configure(state='readonly')
+    txt2.bind("<Button-1>", keyInput)
+    txt3.bind("<Button-1>", keyInput)
+    txt4.bind("<Button-1>", keyInput)
+    txt5.bind("<Button-1>", keyInput)
+    txt6.bind("<Button-1>", keyInput)
+    txt7.bind("<Button-1>", keyInput)
+    txt8.bind("<Button-1>", keyInput)
+    txt9.bind("<Button-1>", keyInput)
+    txt10.bind("<Button-1>", keyInput)
+    txt11.bind("<Button-1>", keyInput)
+    txt12.bind("<Button-1>", keyInput)
+    txt13.bind("<Button-1>", keyInput)
+    txt14.bind("<Button-1>", keyInput)
+    txt15.bind("<Button-1>", keyInput)
+    txt16.bind("<Button-1>", keyInput)
 
 
-    lbl17 = Label(window, width=13, text='마우스감도조절')
-    bar1 = Scale(window, orient='horizontal', length=450)
-    btn3 = Button(window, width=13, text='저장')
-    btn4 = Button(window, width=13, text='취소')
+    lbl17 = Label(windowo, width=13, text='마우스감도조절')
+    bar1 = Scale(windowo, orient='horizontal', length=450)
+    bar1.set(50)
+    btn3 = Button(windowo, width=13, text='저장', command=lambda: callback(bar1.get()))
+    btn4 = Button(windowo, width=13, text='취소', command=processoExit)
 
     lbl0.place(x=10, y=10)
     lbl1.place(x=60, y=50)
@@ -102,7 +183,17 @@ def processOption():        #설정버튼 클릭 이벤트처리
 def processExit():        #종료버튼 클릭 이벤트처리
     window.destroy()
 
+def processoExit():        #옵션에서 취소버튼 클릭 이벤트처리
+    windowo.destroy()
+
+def processsExit():        #설정 선택에서 종료버튼 클릭 이벤트처리
+    windows.destroy()
+
+windows = None
+windowo = None
+
 window = Tk()
+window.title("K/M Trigger")
 window.geometry("300x250+0+0")
 
 btn1 = Button(window, width=13, text='게임시작' ,command=processStart)

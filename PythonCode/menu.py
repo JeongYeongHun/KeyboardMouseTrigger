@@ -6,7 +6,7 @@ while True:
     if select == '1':
         keylist = []
         stack = []
-        row = 0;
+        row = 0
         while True:
             print("\n\n",DBHelper.list())
             selectSet = input("\n>>select setting : ")
