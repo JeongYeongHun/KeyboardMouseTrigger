@@ -1,7 +1,7 @@
 from tkinter import *
 import Control
 import DBHelper
-
+import pygame
 
 def processStart():        #게임시작버튼 클릭 이벤트처리
     global windows
@@ -39,8 +39,27 @@ def start(select):
         Control.control(keylist, stack)
     
 
-def keyInput(event):
-    print("s")
+def keyInput(k):
+    global entryList, windowo
+
+    pygame.init()
+    pygame.display.init()
+    screen = pygame.display.set_mode((1,1))
+    pygame.display.flip()
+    clock=pygame.time.Clock()
+    chk = True
+    
+    while chk:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                ikey = pygame.key.name(event.key)
+                pygame.quit()
+                chk = False
+    entryList[k].configure(state='normal')
+    entryList[k].delete(0, END)
+    entryList[k].insert(0,ikey)
+    entryList[k].configure(state='readonly')
+    
 
 def settingSave(value):
     setlist = []
@@ -68,6 +87,7 @@ def settingSave(value):
 
 def processOption():        #설정버튼 클릭 이벤트처리
     global windowo, txt1, txt2, txt3, txt4, txt5, txt6, txt7, txt8, txt9, txt10, txt11, txt12, txt13, txt14, txt15, txt16
+    global button, entryList
     windowo = Tk()
     windowo.title("Setting")
     windowo.geometry("520x480+0+0")
@@ -105,6 +125,8 @@ def processOption():        #설정버튼 클릭 이벤트처리
     txt15 = Entry(windowo,  width=7)
     txt16 = Entry(windowo,  width=7)
 
+    
+
     rows = DBHelper.load(1) #normal
 
     txt2.insert(0,rows[2])
@@ -122,6 +144,22 @@ def processOption():        #설정버튼 클릭 이벤트처리
     txt15.insert(0,rows[18])
     txt16.insert(0,rows[19])
 
+    entryList.insert(0, txt1)
+    entryList.insert(1, txt2)
+    entryList.insert(2, txt3)
+    entryList.insert(3, txt4)
+    entryList.insert(4, txt5)
+    entryList.insert(5, txt6)
+    entryList.insert(6, txt7)
+    entryList.insert(7, txt8)
+    entryList.insert(8, txt9)
+    entryList.insert(9, txt10)
+    entryList.insert(10, txt11)
+    entryList.insert(11, txt12)
+    entryList.insert(12, txt13)
+    entryList.insert(13, txt15)
+    entryList.insert(14, txt16)
+
     txt2.configure(state='readonly')
     txt3.configure(state='readonly')
     txt4.configure(state='readonly')
@@ -136,21 +174,10 @@ def processOption():        #설정버튼 클릭 이벤트처리
     txt13.configure(state='readonly')
     txt15.configure(state='readonly')
     txt16.configure(state='readonly')
-    txt2.bind("<Button-1>", keyInput)
-    txt3.bind("<Button-1>", keyInput)
-    txt4.bind("<Button-1>", keyInput)
-    txt5.bind("<Button-1>", keyInput)
-    txt6.bind("<Button-1>", keyInput)
-    txt7.bind("<Button-1>", keyInput)
-    txt8.bind("<Button-1>", keyInput)
-    txt9.bind("<Button-1>", keyInput)
-    txt10.bind("<Button-1>", keyInput)
-    txt11.bind("<Button-1>", keyInput)
-    txt12.bind("<Button-1>", keyInput)
-    txt13.bind("<Button-1>", keyInput)
-    txt15.bind("<Button-1>", keyInput)
-    txt16.bind("<Button-1>", keyInput)
 
+    for b in range(1, 15):
+        button.append(Button(windowo, width=0, height=0, pady=0.5,bg="light grey", command=lambda k=b:keyInput(k)))
+    
     lbl17 = Label(windowo, width=13, text='마우스감도조절')
     bar1 = Scale(windowo, orient='horizontal', length=450)
     bar1.set(50)
@@ -162,33 +189,46 @@ def processOption():        #설정버튼 클릭 이벤트처리
     txt1.place(x=150, y=53)
     lbl2.place(x=60, y=80)
     txt2.place(x=150, y=83)
+    button[0].place(x=210, y=83)
     lbl3.place(x=60, y=110)
     txt3.place(x=150, y=113)
+    button[1].place(x=210, y=113)
     lbl4.place(x=60, y=140)
     txt4.place(x=150, y=143)
+    button[2].place(x=210, y=143)
     lbl5.place(x=60, y=170)
     txt5.place(x=150, y=173)
+    button[3].place(x=210, y=173)
     lbl6.place(x=60, y=200)
     txt6.place(x=150, y=203)
+    button[4].place(x=210, y=203)
     lbl7.place(x=60, y=230)
     txt7.place(x=150, y=233)
+    button[5].place(x=210, y=233)
     lbl8.place(x=60, y=260)
     txt8.place(x=150, y=263)
-
+    button[6].place(x=210, y=263)
     lbl9.place(x=270, y=50)
     txt9.place(x=360, y=53)
+    button[7].place(x=420, y=53)
     lbl10.place(x=270, y=80)
     txt10.place(x=360, y=83)
+    button[8].place(x=420, y=83)
     lbl11.place(x=270, y=110)
     txt11.place(x=360, y=113)
+    button[9].place(x=420, y=113)
     lbl12.place(x=270, y=140)
     txt12.place(x=360, y=143)
+    button[10].place(x=420, y=143)
     lbl13.place(x=270, y=170)
     txt13.place(x=360, y=173)
+    button[11].place(x=420, y=173)
     lbl15.place(x=270, y=200)
     txt15.place(x=360, y=203)
+    button[12].place(x=420, y=203)
     lbl16.place(x=270, y=230)
     txt16.place(x=360, y=233)
+    button[13].place(x=420, y=233)
 
     lbl17.place(x=10, y=315)
     bar1.place(x=30, y=335)
@@ -200,6 +240,8 @@ def processExit():        #종료버튼 클릭 이벤트처리
     window.destroy()
 
 def processoExit():        #옵션에서 취소버튼 클릭 이벤트처리
+    global button
+    button = []
     windowo.destroy()
 
 def processsExit():        #설정 선택에서 종료버튼 클릭 이벤트처리
@@ -228,6 +270,24 @@ txt12 = Entry(windowo, width=7)
 txt13 = Entry(windowo, width=7)
 txt15 = Entry(windowo, width=7)
 txt16 = Entry(windowo, width=7)
+entryList = []
+entryList.insert(0, txt1)
+entryList.insert(1, txt2)
+entryList.insert(2, txt3)
+entryList.insert(3, txt4)
+entryList.insert(4, txt5)
+entryList.insert(5, txt6)
+entryList.insert(6, txt7)
+entryList.insert(7, txt8)
+entryList.insert(8, txt9)
+entryList.insert(9, txt10)
+entryList.insert(10, txt11)
+entryList.insert(11, txt12)
+entryList.insert(12, txt13)
+entryList.insert(13, txt15)
+entryList.insert(14, txt16)
+
+button = []
 
 
 btn1 = Button(window, width=13, text='게임시작' ,command=processStart)

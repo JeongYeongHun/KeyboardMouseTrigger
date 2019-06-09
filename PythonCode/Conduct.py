@@ -186,10 +186,12 @@ def conduct(stack):
                         adservo.ChangeDutyCycle(5.0)
                     elif index == 3 and pre_stack[1] == 1:
                         adservo.ChangeDutyCycle(8.0)
+                    if index == 4 and stack[0] == 1:        #shift
+                        wsservo.ChangeDutyCycle(8.0)
                 else:
                     gpio.output(dic[index], 0)
             if i == 1:  #key down
-                if index < 4 or index == 18 or index == 19: #servo motor
+                if index < 5 or index == 18 or index == 19: #servo motor
                     if index == 0 and pre_stack[2] == 0:    #w
                         wsservo.ChangeDutyCycle(8.0)
                     elif index == 2 and pre_stack[0] == 0:  #s
@@ -198,6 +200,8 @@ def conduct(stack):
                         adservo.ChangeDutyCycle(8.0)
                     elif index == 3 and pre_stack[1] == 0:  #d
                         adservo.ChangeDutyCycle(5.0)
+                    if index == 4 and stack[0] == 1:        #shift + w
+                        wsservo.ChangeDutyCycle(9.0)
                 else: 
                     gpio.output(dic[index], 1)
     setStack(stack)
