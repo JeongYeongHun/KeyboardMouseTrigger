@@ -1,10 +1,9 @@
 import pygame
 import Conduct
-#import SerialToArduino
 
 def control(keylist, stack):
-    windowwidth = 300
-    windowheight = 300
+    windowwidth = 500
+    windowheight = 500
     pygame.init()
     pygame.display.init()
     #screen = pygame.display.set_mode((windowwidth, windowheight), pygame.FULLSCREEN)
@@ -16,9 +15,9 @@ def control(keylist, stack):
     screen_info = pygame.display.Info()
     dx = screen_info.current_w/2
     dy = screen_info.current_h/2
-    #pygame.mouse.set_pos(dx, dy)
-    #pygame.mouse.set_visible(False)
-    #pygame.event.set_grab(True)
+    pygame.mouse.set_pos(dx, dy)
+    pygame.mouse.set_visible(False)
+    pygame.event.set_grab(True)
     Conduct.setStack(stack)
 
     while done:
@@ -48,10 +47,11 @@ def control(keylist, stack):
                     stack[14] = 0
             if event.type == pygame.MOUSEMOTION:
                 x,y = pygame.mouse.get_rel()
-                stack[18] = x
-                stack[19] = y
+                if x < 200:
+                    stack[18] = x/20
+                    stack[19] = y
 
-                '''
+                '''#화면 크기를 구해서 일정 범위 밖으로 이동하면 마우스를 중앙으로 이동시킴
                 x,y = pygame.mouse.get_pos()
                 if x < (dx/5) or y < (dy/5) or x > (dx + (dx/5)*4) or y > (dy + (dy/5)*4):
                     pygame.mouse.set_pos(dx, dy)
@@ -64,8 +64,6 @@ def control(keylist, stack):
                 '''
                 
             Conduct.conduct(stack)
-            #print(stack)
-        #SerialToArduino.sendserial(stack)   #아두이노와 시리얼통신
         
 
         
